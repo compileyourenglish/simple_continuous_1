@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Present Simple чи Present Continuous? Standup update</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #e8edf4;
+    --surface: #ffffff;
+    --ink: #1b2233;
+    --muted: #5d6881;
+    --line: #cfd7e4;
+    --accent: #3b4de0;
+    --accent-ink: #ffffff;
+    --accent-soft: #e4e7fc;
+    --ok: #17794f;
+    --ok-soft: #dcf3e8;
+    --bad: #b8302a;
+    --bad-soft: #fbe3e1;
+    --field: #f3f6fb;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161f;
+      --surface: #1b2130;
+      --ink: #e8ecf5;
+      --muted: #97a2ba;
+      --line: #2e3850;
+      --accent: #8c98ff;
+      --accent-ink: #12161f;
+      --accent-soft: #28306b;
+      --ok: #5fd39b;
+      --ok-soft: #173a2b;
+      --bad: #ff8d84;
+      --bad-soft: #43201e;
+      --field: #141a27;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161f;
+    --surface: #1b2130;
+    --ink: #e8ecf5;
+    --muted: #97a2ba;
+    --line: #2e3850;
+    --accent: #8c98ff;
+    --accent-ink: #12161f;
+    --accent-soft: #28306b;
+    --ok: #5fd39b;
+    --ok-soft: #173a2b;
+    --bad: #ff8d84;
+    --bad-soft: #43201e;
+    --field: #141a27;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 18px 56px;
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+    font-weight: 700;
+  }
+  .task {
+    margin: 0 0 6px;
+    color: var(--muted);
+    max-width: 62ch;
+  }
+  .task b { color: var(--ink); font-weight: 600; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin: 14px 0 26px;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .legend li { display: flex; align-items: baseline; gap: 6px; }
+  .legend code {
+    font-family: inherit;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--accent-soft);
+    padding: 1px 7px;
+    border-radius: 6px;
+  }
+
+  /* Message from Alex */
+  .message {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 700;
+    font-size: 1.15rem;
+    display: grid;
+    place-items: center;
+    user-select: none;
+  }
+  .bubble {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px 16px 16px 16px;
+    padding: 18px 20px 22px;
+    min-width: 0;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 10px;
+    margin-bottom: 10px;
+  }
+  .meta strong { font-weight: 650; }
+  .meta span { color: var(--muted); font-size: 0.85rem; }
+
+  .text {
+    margin: 0;
+    line-height: 2.5;
+    font-size: 1.05rem;
+  }
+
+  .gap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    vertical-align: baseline;
+  }
+  .gap input {
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1.3;
+    width: 9.5em;
+    max-width: 52vw;
+    padding: 4px 9px;
+    color: var(--ink);
+    background: var(--field);
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color .15s, background-color .15s;
+  }
+  .gap input::placeholder { color: var(--muted); opacity: .75; }
+  .gap input:hover { border-color: var(--muted); }
+  .gap input:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .verb {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .mark {
+    font-weight: 700;
+    font-size: 0.95rem;
+    min-width: 1ch;
+  }
+  .gap.ok input { border-color: var(--ok); background: var(--ok-soft); }
+  .gap.ok .mark { color: var(--ok); }
+  .gap.bad input { border-color: var(--bad); background: var(--bad-soft); }
+  .gap.bad .mark { color: var(--bad); }
+  .gap.shown input { border-style: dashed; border-color: var(--accent); background: var(--accent-soft); }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  button {
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.97rem;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: transform .08s, background-color .15s, border-color .15s;
+  }
+  button:active { transform: translateY(1px); }
+  button:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 2px; border-color: var(--accent); }
+  .primary { background: var(--accent); color: var(--accent-ink); }
+  .primary:hover { filter: brightness(1.08); }
+  .secondary { background: transparent; color: var(--ink); border-color: var(--line); }
+  .secondary:hover { border-color: var(--muted); }
+
+  /* Result */
+  .result {
+    margin-top: 22px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 16px 20px;
+  }
+  .result[hidden] { display: none; }
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .score {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .score small { font-size: 1rem; color: var(--muted); font-weight: 500; }
+  .bar {
+    flex: 1 1 160px;
+    height: 10px;
+    border-radius: 99px;
+    background: var(--field);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .bar > i {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    transition: width .35s ease;
+  }
+  .verdict { margin: 10px 0 0; font-weight: 500; }
+  .tips {
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 8px;
+  }
+  .tips li {
+    background: var(--bad-soft);
+    border-radius: 10px;
+    padding: 9px 13px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .tips b { color: var(--bad); }
+  .tips .tense { font-weight: 600; }
+
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    .message { grid-template-columns: 1fr; }
+    .avatar { width: 38px; height: 38px; border-radius: 10px; }
+    .bubble { border-radius: 16px; padding: 16px 14px 20px; }
+    .controls button { flex: 1 1 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <h1>Present Simple чи Present Continuous?</h1>
+  <p class="task"><b>Fill in the gaps</b> using the correct form of the verb in brackets (Present Simple or Present Continuous).</p>
+  <p class="task">Впишіть лише дієслово — займенники <i>I</i> і <i>we</i> уже є в тексті. Скорочені форми (<i>'m</i>, <i>don't</i>) теж зараховуються.</p>
+
+  <ul class="legend" aria-label="Нагадування">
+    <li><code>Present Simple</code> звичка, регулярна дія, стан</li>
+    <li><code>Present Continuous</code> дія зараз або цього періоду</li>
+  </ul>
+
+  <section class="message" aria-label="Standup update">
+    <div class="avatar" aria-hidden="true">A</div>
+    <div class="bubble">
+      <div class="meta"><strong>Alex</strong><span>This is Alex's standup update</span></div>
+
+      <p class="text" id="text">
+        “Hi team. I
+        <span class="gap" data-i="0"><input type="text" placeholder="1" aria-label="Gap 1, verb work" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="verb">(work)</span><span class="mark" aria-hidden="true"></span></span>
+        on the new user authentication feature right now — it's our main sprint goal. I usually
+        <span class="gap" data-i="1"><input type="text" placeholder="2" aria-label="Gap 2, verb start" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="verb">(start)</span><span class="mark" aria-hidden="true"></span></span>
+        with a code review in the morning, and then I
+        <span class="gap" data-i="2"><input type="text" placeholder="3" aria-label="Gap 3, verb focus" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="verb">(focus)</span><span class="mark" aria-hidden="true"></span></span>
+        on implementation. This week, we
+        <span class="gap" data-i="3"><input type="text" placeholder="4" aria-label="Gap 4, verb refactor" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="verb">(refactor)</span><span class="mark" aria-hidden="true"></span></span>
+        the legacy login system — it's a big task! Our CI pipeline
+        <span class="gap" data-i="4"><input type="text" placeholder="5" aria-label="Gap 5, verb run" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="verb">(run)</span><span class="mark" aria-hidden="true"></span></span>
+        every time someone pushes to main, and right now it
+        <span class="gap" data-i="5"><input type="text" placeholder="6" aria-label="Gap 6, verb fail" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="verb">(fail)</span><span class="mark" aria-hidden="true"></span></span>
+        on the staging environment. I
+        <span class="gap" data-i="6"><input type="text" placeholder="7" aria-label="Gap 7, verb not understand" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="verb">(not / understand)</span><span class="mark" aria-hidden="true"></span></span>
+        the root cause yet, but I
+        <span class="gap" data-i="7"><input type="text" placeholder="8" aria-label="Gap 8, verb investigate" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="verb">(investigate)</span><span class="mark" aria-hidden="true"></span></span>
+        it with the DevOps team today.”
+      </p>
+
+      <div class="controls">
+        <button type="button" class="primary" id="check">Перевірити</button>
+        <button type="button" class="secondary" id="reveal">Показати відповіді</button>
+        <button type="button" class="secondary" id="reset">Почати спочатку</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="result" id="result" hidden aria-live="polite">
+    <div class="score-row">
+      <div class="score" id="score"></div>
+      <div class="bar" role="presentation"><i id="barfill"></i></div>
+    </div>
+    <p class="verdict" id="verdict"></p>
+    <ul class="tips" id="tips"></ul>
+  </section>
+</main>
+
+<script>
+(function () {
+  // Допустимі відповіді та пояснення для кожного пропуску
+  var ITEMS = [
+    { answers: ["am working", "'m working"], show: "am working",
+      tense: "Present Continuous",
+      tip: "right now — дія відбувається саме зараз: am/is/are + дієслово з -ing." },
+    { answers: ["start"], show: "start",
+      tense: "Present Simple",
+      tip: "usually — звичка, регулярна дія. З I форма дієслова без змін." },
+    { answers: ["focus"], show: "focus",
+      tense: "Present Simple",
+      tip: "and then — частина щоденної рутини, як і попередня дія. Present Simple." },
+    { answers: ["are refactoring", "'re refactoring"], show: "are refactoring",
+      tense: "Present Continuous",
+      tip: "this week — тимчасова дія, що триває в цей період: are + дієслово з -ing." },
+    { answers: ["runs"], show: "runs",
+      tense: "Present Simple",
+      tip: "every time — регулярне повторення. Підмет it (the pipeline) — додаємо -s." },
+    { answers: ["is failing", "'s failing"], show: "is failing",
+      tense: "Present Continuous",
+      tip: "right now — це відбувається саме зараз: is + дієслово з -ing." },
+    { answers: ["do not understand", "don't understand"], show: "don't understand",
+      tense: "Present Simple",
+      tip: "understand — дієслово стану, його зазвичай не вживають у Continuous. Заперечення: don't + дієслово." },
+    { answers: ["am investigating", "'m investigating"], show: "am investigating",
+      tense: "Present Continuous",
+      tip: "today — дія, що триває сьогодні (або вже заплановано): am + дієслово з -ing." }
+  ];
+
+  var gaps = Array.prototype.slice.call(document.querySelectorAll(".gap"));
+  var inputs = gaps.map(function (g) { return g.querySelector("input"); });
+  var marks = gaps.map(function (g) { return g.querySelector(".mark"); });
+
+  var resultBox = document.getElementById("result");
+  var scoreEl = document.getElementById("score");
+  var barFill = document.getElementById("barfill");
+  var verdictEl = document.getElementById("verdict");
+  var tipsEl = document.getElementById("tips");
+
+  function normalize(value) {
+    var s = String(value || "").toLowerCase();
+    s = s.replace(/[\u2018\u2019\u02bc`´]/g, "'");   // типографські апострофи → '
+    s = s.replace(/\s+/g, " ").trim();
+    s = s.replace(/^(i|we|it|he|she|they|you)(?=')/, "");   // "i'm working" → "'m working"
+    s = s.replace(/^(i|we|it|he|she|they|you)\s+/, "");     // "i work" → "work"
+    return s;
+  }
+
+  function isCorrect(index) {
+    var val = normalize(inputs[index].value);
+    return ITEMS[index].answers.indexOf(val) !== -1;
+  }
+
+  function clearState(index) {
+    gaps[index].classList.remove("ok", "bad", "shown");
+    marks[index].textContent = "";
+  }
+
+  function check() {
+    var correct = 0;
+    var empty = 0;
+    var wrong = [];
+
+    inputs.forEach(function (inp, i) {
+      clearState(i);
+      var filled = inp.value.trim() !== "";
+      if (!filled) empty++;
+      if (isCorrect(i)) {
+        gaps[i].classList.add("ok");
+        marks[i].textContent = "✓";
+        correct++;
+      } else {
+        gaps[i].classList.add("bad");
+        marks[i].textContent = "✕";
+        wrong.push(i);
+      }
+    });
+
+    var total = ITEMS.length;
+    scoreEl.innerHTML = correct + " <small>/ " + total + "</small>";
+    barFill.style.width = Math.round((correct / total) * 100) + "%";
+
+    var verdict;
+    if (correct === total) verdict = "Чудово! Усі відповіді правильні. 🎉";
+    else if (correct >= 6) verdict = "Майже ідеально — залишилося виправити кілька помилок.";
+    else if (correct >= 4) verdict = "Непогано. Подивіться на підказки нижче й спробуйте ще раз.";
+    else if (empty === total) verdict = "Спершу заповніть пропуски, а потім натисніть «Перевірити».";
+    else verdict = "Варто повторити різницю між Present Simple і Present Continuous. Підказки нижче допоможуть.";
+    verdictEl.textContent = verdict;
+
+    tipsEl.innerHTML = "";
+    wrong.forEach(function (i) {
+      var li = document.createElement("li");
+      var b = document.createElement("b");
+      b.textContent = (i + 1) + ". ";
+      var t = document.createElement("span");
+      t.className = "tense";
+      t.textContent = ITEMS[i].tense + " — ";
+      var rest = document.createTextNode(ITEMS[i].tip);
+      li.appendChild(b); li.appendChild(t); li.appendChild(rest);
+      tipsEl.appendChild(li);
+    });
+
+    resultBox.hidden = false;
+    resultBox.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
+  }
+
+  function reveal() {
+    inputs.forEach(function (inp, i) {
+      clearState(i);
+      inp.value = ITEMS[i].show;
+      gaps[i].classList.add("shown");
+    });
+    scoreEl.innerHTML = "8 <small>/ 8</small>";
+    barFill.style.width = "100%";
+    verdictEl.textContent = "Показано правильні відповіді. Ось чому саме така форма:";
+    tipsEl.innerHTML = "";
+    ITEMS.forEach(function (item, i) {
+      var li = document.createElement("li");
+      li.style.background = "var(--accent-soft)";
+      var b = document.createElement("b");
+      b.style.color = "var(--accent)";
+      b.textContent = (i + 1) + ". ";
+      var t = document.createElement("span");
+      t.className = "tense";
+      t.textContent = item.tense + " — ";
+      li.appendChild(b); li.appendChild(t); li.appendChild(document.createTextNode(item.tip));
+      tipsEl.appendChild(li);
+    });
+    resultBox.hidden = false;
+  }
+
+  function reset() {
+    inputs.forEach(function (inp, i) {
+      inp.value = "";
+      clearState(i);
+    });
+    resultBox.hidden = true;
+    tipsEl.innerHTML = "";
+    barFill.style.width = "0";
+    inputs[0].focus();
+  }
+
+  // Подія: редагування знімає позначку з цього поля
+  inputs.forEach(function (inp, i) {
+    inp.addEventListener("input", function () { clearState(i); });
+    inp.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (i < inputs.length - 1 && inp.value.trim() === "") {
+          inputs[i + 1].focus();
+        } else {
+          check();
+        }
+      }
+    });
+  });
+
+  document.getElementById("check").addEventListener("click", check);
+  document.getElementById("reveal").addEventListener("click", reveal);
+  document.getElementById("reset").addEventListener("click", reset);
+})();
+</script>
+</body>
+</html>
